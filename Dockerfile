@@ -1,14 +1,17 @@
 # Use an official OpenJDK runtime as a parent image
 FROM openjdk:17-jdk-slim
 
-# Set the working directory inside the container
+# Set the working directory in the container
 WORKDIR /app
 
-# Copy the JAR file from the target folder
-COPY target/BookApplication-0.0.1-SNAPSHOT.jar app.jar
+# Copy the project files to the container
+COPY . .
 
-# Expose the application's port (adjust if needed)
+# Build the application using Maven
+RUN mvn clean package -DskipTests
+
+# Expose the application port
 EXPOSE 8080
 
-# Command to run the application
-CMD ["java", "-jar", "app.jar"]
+# Run the JAR file
+CMD ["java", "-jar", "target/BookApplication-0.0.1-SNAPSHOT.jar"]
